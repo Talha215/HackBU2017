@@ -1,0 +1,24 @@
+{
+  "name": "facerecogbot",
+  "version": "1.0.0",
+  "description": "a bot that recognizes faces and does stuff with them",
+  "main": "bot.js",
+  "dependencies": {
+    "azure": "^1.2.0-preview",
+    "twit": "^2.2.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Talha215/HackBU2017.git"
+  },
+  "author": "charlie talha nate",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Talha215/HackBU2017/issues"
+  },
+  "homepage": "https://github.com/Talha215/HackBU2017#readme"
+}
