@@ -5,6 +5,7 @@
   "main": "bot.js",
   "dependencies": {
     "azure": "^1.2.0-preview",
+    "project-oxford": "^1.7.0",
     "twit": "^2.2.5"
   },
   "devDependencies": {},
