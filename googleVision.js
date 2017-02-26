@@ -36,8 +36,10 @@ function process(input) {
 					faces[i].bounds.head[2]
 				]
 			};
-			console.log(x[i]);
+			//console.log(x[i]);
 		}
-		console.log("numFaces = " + faces.length);
+		//console.log("numFaces = " + faces.length);
 	});
+
+
 }
