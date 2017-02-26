@@ -33,4 +33,8 @@ Twitter.get('search/tweets', { q: handle }, function(err, data, response){
       });
     }
   }
-})
+});
+
+Twitter.post('statuses/update', { status: 'i am a bot and this is my tweet beep boop'}, function(err, data, response){
+  console.log(data);
+});
