@@ -1,3 +1,6 @@
+var Jimp = require("jimp");
+
+
 function addEmoji(input,numFaces,faces){
 	var bg = Jimp.read(input);
 	var arrFaces = [];
