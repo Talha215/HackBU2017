@@ -42,10 +42,10 @@ function process(input) {
 			//console.log(x[i]);
 		}
 		//console.log("numFaces = " + faces.length);
+		var next = require('./imageProcessing.js');
+		next.addEmoji(input,numFaces,x);
 	});
 	
-	var next = require('./imageProcessing.js');
-	next.addEmoji(input,numFaces,x);
 }
 
 module.exports.process = process;
