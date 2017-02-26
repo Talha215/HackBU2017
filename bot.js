@@ -8,17 +8,28 @@ Twitter.get('search/tweets', { q: handle }, function(err, data, response){
   for(i = 0; i < data.statuses.length; i++){
     if(data.statuses[i].extended_entities !== undefined){
       var url = data.statuses[i].extended_entities.media[0].media_url;
-      console.log(url);
+      var dest = './images/user_submitted/';
+      var suffix = url.substring(url.lastIndexOf('.'));
+      var crypto = require('crypto');
+      var rand_id = crypto.randomBytes(15).toString('hex');
+      var rand_id = rand_id.concat(suffix);
 
+      console.log("downloading from: " + url);
+
+      var http = require('http');
       var fs = require('fs');
-      var request = require('request');
-      var download = function(uri, file, cb){
-        request.head(uri, function(err, res, body){
-          request(uri).pipe(fs.createWriteStream(file)).on('close', cb);
+      var download = function(uri, dest, cb){
+        var file = fs.createWriteStream(dest);
+        var request = http.get(uri, function(response){
+          response.pipe(file);
+          file.on('finish', function(){
+            file.close(cb);
+          });
         });
-      };
-      download(url, 'cat-img.jpg', function(){
-        console.log("downloaded!");
+      }
+
+      download(url, dest + rand_id, function(){
+        console.log("finished downloading to: " + dest + rand_id);
       });
     }
   }
