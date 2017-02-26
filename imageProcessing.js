@@ -29,7 +29,7 @@ function addEmoji(input,numFaces,faces){
 	var posX, posY, propY, propX;
 	Promise.all(arrFaces).then(function (images) {
 		for(i = 1; i <= numFaces;i++){
-    	//Adjust rotation	
+    	//Adjust rotation
     		deltaY = Math.abs(faces[i].rightEye.y - faces[i].leftEye.y);
 			deltaX = Math.abs(faces[i].rightEye.x - faces[i].leftEye.x);
 			hyp = Math.sqrt(deltaY * deltaY + deltaX * deltaX);
@@ -39,7 +39,7 @@ function addEmoji(input,numFaces,faces){
     			angle *= -1;
 			}
 			arrFaces[i].rotate(angle,false);
-   		
+
 		//Adjust size
    			sideX = faces[i].head[1].x - faces[i].head[0].x;
 			sideY = faces[i].head[1].y - faces[i].head[0].y;
