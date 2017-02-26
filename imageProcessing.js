@@ -60,3 +60,5 @@ function addEmoji(input,numFaces,faces){
     console.log(err);
 	});
 }
+
+module.exports.addEmoji = addEmoji;

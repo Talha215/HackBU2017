@@ -6,11 +6,14 @@ var visionClient = vision({
   keyFilename: 'googleAPI.json'
 });
 
-//process("images/nickpic.jpg");
+process("images/testImage.jpg");
 // Detect faces and the locations of their features in an image.
 function process(input) {
+	var numFaces;
+
 	visionClient.detectFaces(input, function(err, faces) {
-		for(var i = 0; i < faces.length; i++) {
+		numFaces = faces.length;
+		for(var i = 0; i < numFaces; i++) {
 			var em;
 			if(faces[i].joy == true)
 				em = 1;
@@ -40,6 +43,9 @@ function process(input) {
 		}
 		//console.log("numFaces = " + faces.length);
 	});
-
-
+	
+	var next = require('./imageProcessing.js');
+	next.addEmoji(input,numFaces,x);
 }
+
+module.exports.process = process;
