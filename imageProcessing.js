@@ -2,9 +2,8 @@ var Jimp = require("jimp");
 
 
 function addEmoji(input,numFaces,faces){
-	var bg = Jimp.read(input);
 	var arrFaces = [];
-	arrFaces[0] = bg;
+	arrFaces[0] = Jimp.read(input);;
 	for(i=1;i <=numFaces;i++){
 		for(j=0;j<4;j++){
 			switch(faces[i].emotion){
@@ -54,8 +53,9 @@ function addEmoji(input,numFaces,faces){
 			propX = faces[i].noseTip.x / hypRect;
 			posY = faces[i].noseTip.y - propY * hypRect;
 			posX = faces[i].noseTip.x - propX * hypRect;
+			arrFaces[0].composite(arrFaces[i], posX, posY).write("./test.jpg");
 		}
-		arrFaces[0].write("./images/memes.png");
+		//arrFaces[0].resize(500,Jimp.AUTO).write("./images/memes.png");
 	}).catch(function (err) {
     console.log(err);
 	});
