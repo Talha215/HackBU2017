@@ -4,37 +4,45 @@ var config = require('./config.js');
 var Twitter = new twit(config);
 var handle = '@facerecogbot';
 
-Twitter.get('search/tweets', { q: handle }, function(err, data, response){
-  for(i = 0; i < data.statuses.length; i++){
-    if(data.statuses[i].extended_entities !== undefined){
-      var url = data.statuses[i].extended_entities.media[0].media_url;
-      var dest = './images/user_submitted/';
-      var suffix = url.substring(url.lastIndexOf('.'));
-      var crypto = require('crypto');
-      var rand_id = crypto.randomBytes(15).toString('hex');
-      var rand_id = rand_id.concat(suffix);
+function createFile(url){
+  var dest = './images/user_submitted';
+  var suffix = url.substring(url.lastIndexOf('.'));
+  var crypto = require('crypto');
+  var rand_id = crypto.randomBytes(15).toString('hex');
+  var rand_id = rand_id.concat(suffix);
+  return dest + rand_id;
+}
 
-      console.log("downloading from: " + url);
+function perform(){
+  Twitter.get('search/tweets', { q: handle }, function(err, data, response){
+    for(i = 0; i < data.statuses.length; i++){
+      if(data.statuses[i].extended_entities !== undefined){
+        var url = data.statuses[i].extended_entities.media[0].media_url;
+        var fileName = createFile(url);
 
-      var http = require('http');
-      var fs = require('fs');
-      var download = function(uri, dest, cb){
-        var file = fs.createWriteStream(dest);
-        var request = http.get(uri, function(response){
-          response.pipe(file);
-          file.on('finish', function(){
-            file.close(cb);
+        var http = require('http');
+        var fs = require('fs');
+
+        var download = function(uri, dest, cb){
+          var file = fs.createWriteStream(dest);
+          var request = http.get(uri, function(response){
+            response.pipe(file);
+            file.on('finish', function(){
+              file.close(cb);
+            });
           });
+        }
+
+        download(url, dest + rand_id, function(){
+          console.log("finished downloading to: " + dest + rand_id);
         });
+
+        Twitter.post('statuses/update', { status: 'tweet content' }, function(err, data, response){
+          console.log(data);
+        })
       }
-
-      download(url, dest + rand_id, function(){
-        console.log("finished downloading to: " + dest + rand_id);
-      });
     }
-  }
-});
+  });
+}
 
-Twitter.post('statuses/update', { status: 'i am a bot and this is my tweet beep boop'}, function(err, data, response){
-  console.log(data);
-});
+setInterval(perform(), 60000);
