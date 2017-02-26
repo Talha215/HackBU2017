@@ -45,7 +45,7 @@ function process(input) {
 		var next = require('./imageProcessing.js');
 		next.addEmoji(input,numFaces,x);
 	});
-	
+
 }
 
 module.exports.process = process;
