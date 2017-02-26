@@ -2,58 +2,63 @@ var Jimp = require("jimp");
 
 
 function addEmoji(input,numFaces,faces){
-	var arrFaces = [];
-	arrFaces[0] = Jimp.read(input);;
+	console.log(input + " " + numFaces);
+	var arrFaces = new Array(1+numFaces);
+	arrFaces[0] = Jimp.read(input);
+	(arrFaces[0]).rotate(45,false);
 	for(i=1;i <=numFaces;i++){
-		for(j=0;j<4;j++){
-			switch(faces[i].emotion){
-				case 0: //Neutral  happy, angry, sad, surprised
-					arrFaces[i] = Jimp.read("./images/Emoji/neutral.png");
-					break;
-				case 1: //Happy
-					arrFaces[i] = Jimp.read("./images/Emoji/openHappy.png");
-					break;
-				case 2: //Angry
-					arrFaces[i] = Jimp.read("./images/Emoji/mad.png");
-					break;
-				case 3: //Sad
-					arrFaces[i] = Jimp.read("./images/Emoji/sad.png");
-					break;
-				case 4: //Surprised
-					arrFaces[i] = Jimp.read("./images/Emoji/surprised.png");
-			}
+		console.log(faces[i-1].emotion);
+		switch(faces[i-1].emotion){
+			case 0: //Neutral  happy, angry, sad, surprised
+				arrFaces[i] = Jimp.read("./images/Emoji/neutral.png");
+				break;
+			case 1: //Happy
+				arrFaces[i] = Jimp.read("./images/Emoji/openHappy.png");
+				break;
+			case 2: //Angry
+				arrFaces[i] = Jimp.read("./images/Emoji/mad.png");
+				break;
+			case 3: //Sad
+				arrFaces[i] = Jimp.read("./images/Emoji/sad.png");
+				break;
+			case 4: //Surprised
+				arrFaces[i] = Jimp.read("./images/Emoji/surprised.png");
 		}
+		arrFaces[i].rotate(45,false);
 	}
 	var angle, angleRad, deltaY, deltaX, hyp;
 	var sideX, sideY, hypRect, resizeX, resizeY;
 	var posX, posY, propY, propX;
+	console.log("passing through var. " + numFaces);
 	Promise.all(arrFaces).then(function (images) {
 		for(i = 1; i <= numFaces;i++){
+    		var temp = arrFaces[i];
     	//Adjust rotation	
-    		deltaY = Math.abs(faces[i].rightEye.y - faces[i].leftEye.y);
-			deltaX = Math.abs(faces[i].rightEye.x - faces[i].leftEye.x);
+    		deltaY = Math.abs(faces[i-1].rightEye.y - faces[i-1].leftEye.y);
+			deltaX = Math.abs(faces[i-1].rightEye.x - faces[i-1].leftEye.x);
 			hyp = Math.sqrt(deltaY * deltaY + deltaX * deltaX);
 			angleRad = Math.acos(deltaX / hyp);
 			angle = angleRad * 57.29578;
-			if(faces[i].leftEye.y < faces[i].rightEye.y){
+			if(faces[i-1].leftEye.y < faces[i-1].rightEye.y){
     			angle *= -1;
 			}
-			arrFaces[i].rotate(angle,false);
+			temp.rotate(angle,false);
    		
 		//Adjust size
-   			sideX = faces[i].head[1].x - faces[i].head[0].x;
-			sideY = faces[i].head[1].y - faces[i].head[0].y;
+   			sideX = faces[i-1].head[1].x - faces[i-1].head[0].x;
+			sideY = faces[i-1].head[1].y - faces[i-1].head[0].y;
 			hypRect = Math.sqrt(sideY * sideY + sideX * sideX);
 			resizeX = hypRect;
 			resizeY = hypRect;
-			arrFaces[i].resize(resizeX,resizeY,Jimp.AUTO);
+			temp.resize(resizeX,resizeY,Jimp.AUTO);
 
 		//Place at position
-			propY = faces[i].noseTip.y / hypRect;
-			propX = faces[i].noseTip.x / hypRect;
-			posY = faces[i].noseTip.y - propY * hypRect;
-			posX = faces[i].noseTip.x - propX * hypRect;
-			arrFaces[0].composite(arrFaces[i], posX, posY).write("./test.jpg");
+			propY = faces[i-1].noseTip.y / hypRect;
+			propX = faces[i-1].noseTip.x / hypRect;
+			posY = faces[i-1].noseTip.y - propY * hypRect;
+			posX = faces[i-1].noseTip.x - propX * hypRect;
+			temp.composite(arrFaces[i], posX, posY).write("./test.jpg");
+			console.log("passing through second for loop.")
 		}
 		//arrFaces[0].resize(500,Jimp.AUTO).write("./images/memes.png");
 	}).catch(function (err) {
