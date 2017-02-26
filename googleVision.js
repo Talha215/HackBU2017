@@ -6,7 +6,7 @@ var visionClient = vision({
   keyFilename: 'googleAPI.json'
 });
 
-process("images/testImage.jpg");
+process("images/hipster.jpg");
 // Detect faces and the locations of their features in an image.
 function process(input) {
 	var numFaces;
