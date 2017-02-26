@@ -6,25 +6,6 @@ var http = require('http');
 var Twitter = new twit(config);
 var handle = '@facerecogbot';
 
-var completedTweets = new Array();
-
-function openCompletedTweets(){
-  fs.readFile("./completed.txt", "utf8", function(err, data){
-    if(err){
-      return console.log(err);
-    }
-    completedTweets = data.split(',');
-    console.log(completedTweets);
-  })
-};
-
-function reportCompletedTweets(){
-  fs.writeFile("./completed.txt", completedTweets, {"encoding": 'utf8'}, function(err){
-    if(err){ return console.log(err); }
-    console.log(completedTweets);
-  });
-};
-
 function Tweet(path, username){
   this.path = path;
   this.username = username;
