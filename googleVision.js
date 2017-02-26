@@ -7,8 +7,8 @@ var visionClient = vision({
 });
 
 // Detect faces and the locations of their features in an image.
-//function process() {
-	visionClient.detectFaces('images/pleaseKillMe.jpg', function(err, faces) {
+function process(input) {
+	visionClient.detectFaces(input, function(err, faces) {
 		for(var i = 0; i < faces.length; i++) {
 			x[i] = {
 				emotion: [
@@ -28,4 +28,4 @@ var visionClient = vision({
 			console.log(x[i]);
 		}
 	});
-//}
+}
