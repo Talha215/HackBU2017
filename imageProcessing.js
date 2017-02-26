@@ -27,11 +27,10 @@ function addEmoji(input,numFaces,faces){
 	var angle, angleRad, deltaY, deltaX, hyp;
 	var sideX, sideY, hypRect, resizeX, resizeY;
 	var posX, posY, propY, propX;
-	var arrX = [], arrY = [];
 	Promise.all(arrFaces).then(function (images) {
 		console.log("test");
 		var fuckingfuck = arrFaces[0];
-		/*for(i = 1; i <= numFaces;i++){
+		for(i = 1; i <= numFaces;i++){
     		var temp = arrFaces[i];
     	//Adjust rotation	
     		deltaY = Math.abs(faces[i-1].rightEye.y - faces[i-1].leftEye.y);
@@ -57,38 +56,9 @@ function addEmoji(input,numFaces,faces){
 			propX = faces[i-1].noseTip.x / hypRect;
 			posY = faces[i-1].noseTip.y - propY * hypRect;
 			posX = faces[i-1].noseTip.x - propX * hypRect;
-			arrX[i] = posX;
-			arrY[i] = posY;
+			fuckingfuck.composite(temp,posX,posY);
 		}
-		fuckingfuck.clone().composite(arrFaces[1],arrX[1],arrY[1]).write("./images/test.jpg");*/
-		var angle, angleRad, deltaY, deltaX, hyp;
-		var sideX, sideY, hypRect, resizeX, resizeY;
-		var posX, posY, propY, propX;
-		deltaY = Math.abs(faces[i-1].rightEye.y - faces[i-1].leftEye.y);
-		deltaX = Math.abs(faces[i-1].rightEye.x - faces[i-1].leftEye.x);
-		hyp = Math.sqrt(deltaY * deltaY + deltaX * deltaX);
-		angleRad = Math.acos(deltaX / hyp);
-		angle = angleRad * 57.29578;
-		if(faces[i-1].leftEye.y < faces[i-1].rightEye.y){
-			angle *= -1;
-		}
-		sideX = faces[i-1].head[1].x - faces[i-1].head[0].x;
-		sideY = faces[i-1].head[1].y - faces[i-1].head[0].y;
-		hypRect = Math.sqrt(sideY * sideY + sideX * sideX);
-		resizeX = hypRect;
-		resizeY = hypRect;
-		propY = faces[i-1].noseTip.y / hypRect;
-		propX = faces[i-1].noseTip.x / hypRect;
-		posY = faces[i-1].noseTip.y - propY * hypRect;
-		posX = faces[i-1].noseTip.x - propX * hypRect;
-		
-		var face = Jimp.read("./images/Emoji/openHappy.png", function (err, image) {if(err) throw error});
-		Jimp.read(input, function (err, image) {
-			if(err) 
-				throw error
-			face.rotate(angle,false).resize(resizeX,resizeY,Jimp.AUTO);
-			image.clone().composite(face,posX,posY).write("fuckyourdad.jpg");
-		});
+		fuckingfuck.clone().write("./images/iFuckedYourDad.jpg");
 
 	}).catch(function (err) {
     console.log(err);
