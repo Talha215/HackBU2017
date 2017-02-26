@@ -6,6 +6,7 @@ var visionClient = vision({
   keyFilename: 'googleAPI.json'
 });
 
+//process("images/testImage.jpg");
 // Detect faces and the locations of their features in an image.
 function process(input) {
 	visionClient.detectFaces(input, function(err, faces) {
@@ -17,6 +18,10 @@ function process(input) {
 					faces[i].sorrow,
 					faces[i].surprise
 				],
+				lip: [
+					faces[i].features.lips.top,
+					faces[i].features.lips.bottom
+				],
 				noseTip: faces[i].features.nose.tip,
 				leftEye: faces[i].features.eyes.left,
 				rightEye: faces[i].features.eyes.right,
@@ -25,7 +30,7 @@ function process(input) {
 					faces[i].bounds.head[2]
 				]
 			};
-			console.log(x[i]);
+			//console.log(x[i]);
 		}
 	});
 }
