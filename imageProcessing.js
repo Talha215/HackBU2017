@@ -1,5 +1,5 @@
 function addEmoji(input,numFaces,faces){
-	var bg = Jimp.read("./images/testImage.jpg");
+	var bg = Jimp.read(input);
 	var arrFaces = [];
 	arrFaces[0] = bg;
 	for(i=1;i <=numFaces;i++){
@@ -24,7 +24,7 @@ function addEmoji(input,numFaces,faces){
 	}
 	var angle, angleRad, deltaY, deltaX, hyp;
 	var sideX, sideY, hypRect, resizeX, resizeY;
-	var posX, posY;
+	var posX, posY, propY, propX;
 	Promise.all(arrFaces).then(function (images) {
 		for(i = 1; i <= numFaces;i++){
     	//Adjust rotation	
@@ -47,8 +47,10 @@ function addEmoji(input,numFaces,faces){
 			arrFaces[i].resize(resizeX,resizeY,Jimp.AUTO);
 
 		//Place at position
-			posX = faces[i].noseTip.x - (1/2) * sideX;
-			posY = faces[i].noseTip.y - (1/2) * sideY;
+			propY = faces[i].noseTip.y / hypRect;
+			propX = faces[i].noseTip.x / hypRect;
+			posY = faces[i].noseTip.y - propY * hypRect;
+			posX = faces[i].noseTip.x - propX * hypRect;
 		}
 		arrFaces[0].write("./images/memes.png");
 	}).catch(function (err) {
