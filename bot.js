@@ -6,6 +6,25 @@ var http = require('http');
 var Twitter = new twit(config);
 var handle = '@facerecogbot';
 
+var completedTweets = new Array();
+
+function openCompletedTweets(){
+  fs.readFile("./completed.txt", "utf8", function(err, data){
+    if(err){
+      return console.log(err);
+    }
+    completedTweets = data.split(',');
+    console.log(completedTweets);
+  })
+};
+
+function reportCompletedTweets(){
+  fs.writeFile("./completed.txt", completedTweets, {"encoding": 'utf8'}, function(err){
+    if(err){ return console.log(err); }
+    console.log(completedTweets);
+  });
+};
+
 function Tweet(path, username){
   this.path = path;
   this.username = username;
@@ -21,11 +40,13 @@ function createFile(url){
 };
 
 function gatherTweets(){
-  var query = handle
+  var query = handle;
+
   Twitter.get('search/tweets', {q: query, result_type: 'recent' }, function(err, data, response){
-    console.log(data);
+
     if(data !== undefined){
       for(i = 0; i < data.statuses.length; i++){
+        completedTweets.push(data.statuses[i].id_str);
         if(data.statuses[i].extended_entities !== undefined){
           var url = data.statuses[i].extended_entities.media[0].media_url;
           var fileName = createFile(url);
@@ -42,13 +63,14 @@ function gatherTweets(){
 
           var username = data.statuses[i].user.screen_name
           download(url, fileName, username, function(err, data, response){
-            console.log("downloading to " + fileName);
             postTweet(fileName, username);
           })
         }
       }
     }
   });
+  })
+
 };
 
 function postTweet(fileName, username){
@@ -63,7 +85,6 @@ function postTweet(fileName, username){
       if(!err){
         var params = { status: '@' + username + " here is your photo! #facerecogbot", media_ids: [media_id_string] }
         Twitter.post('statuses/update', params, function(err, data, response){
-          console.log(data);
         });
       }
     });
