@@ -27,7 +27,6 @@ function gatherTweets(){
 
     if(data !== undefined){
       for(i = 0; i < data.statuses.length; i++){
-        completedTweets.push(data.statuses[i].id_str);
         if(data.statuses[i].extended_entities !== undefined){
           var url = data.statuses[i].extended_entities.media[0].media_url;
           var fileName = createFile(url);
@@ -50,9 +49,8 @@ function gatherTweets(){
       }
     }
   });
-  })
+}
 
-};
 
 function postTweet(fileName, username){
   var b64content = fs.readFileSync(fileName, { encoding: 'base64' });

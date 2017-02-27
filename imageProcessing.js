@@ -39,43 +39,41 @@ function addEmoji(input,numFaces,faces){
 	var arrEmojis = [];
 	var promises = [];
 	tweetedPic = Jimp.read(input, function (err, image) {
-		if(err) throw err
+		if(err) throw err;
 		for(i = 0; i < numFaces; i++){
 			switch(faces[i].emotion){
 				case 0: // neutral
-					promises.push(Jimp.read("./images/Emoji/neutral.png", function (err, image){
+						Jimp.read("./images/Emoji/neutral.png", function (err, image){
 						arrEmojis.push(image);
-						console.log("making happy");
-						if(err) throw err
-					}));
+						console.log("making neutral");
+						if(err) throw err;
+					});
 				case 1: // happy
-					promises.push(Jimp.read("./images/Emoji/openHappy.png", function (err, image){
+						Jimp.read("./images/Emoji/openHappy.png", function (err, image){
 						arrEmojis.push(image);
 						console.log("making happy");
-						if(err) throw err
-					}));
+						if(err) throw err;
+					});
 				case 2: // angry
-					promises.push(Jimp.read("./images/Emoji/mad.png", function (err, image){
+						Jimp.read("./images/Emoji/mad.png", function (err, image){
 						arrEmojis.push(image);
-						console.log("making happy");
-						if(err) throw err
-					}));
+						console.log("making mad");
+						if(err) throw err;
+					});
 				case 3: // sad
-					promises.push(Jimp.read("./images/Emoji/sad.png", function (err, image){
+						Jimp.read("./images/Emoji/sad.png", function (err, image){
 						arrEmojis.push(image);
-						console.log("making happy");
-						if(err) throw err
-					}));
+						console.log("making sad");
+						if(err) throw err;
+					});
 				case 4: // surprised
-					promises.push(Jimp.read("./images/Emoji/surprised.png", function (err, image){
+						Jimp.read("./images/Emoji/surprised.png", function (err, image){
 						arrEmojis.push(image);
-						console.log("making happy");
-						if(err) throw err
-					}));
+						console.log("making surprised");
+						if(err) throw err;
+					});
 			}
 		}
-		console.log(promises);
-
 		Promise.all(promises).then(function(err, data, response){
 			console.log("help");
 			console.log(arrEmojis);
